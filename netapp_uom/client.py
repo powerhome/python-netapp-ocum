@@ -7,9 +7,9 @@ class NetApp_UOM_Client(object):
     Class object for handling HTTP requests to the UOM API.
     """
     def __init__(self, api_host, api_user, api_password,
-        api_port=443,
-        verify_ssl=True,
-        filters={}
+        api_port   = 443,
+        verify_ssl = True,
+        filters    = {}
     ):
 
         # Store connection settings
@@ -27,17 +27,6 @@ class NetApp_UOM_Client(object):
         # Request handler
         self.request = NetApp_UOM_HTTP(self.settings)
 
-    @classmethod
-    def with_settings(cls, settings, filters={}):
-        """
-        Create an instance of the client using the NetApp_UOM_Settings object.
-        """
-        return cls(settings.api_host, settings.api_user, settings.api_password,
-            api_port   = settings.api_port,
-            verify_ssl = settings.verify_ssl,
-            filters    = filters,
-        )
-
     def set_params(self, params):
         """
         Set query parameters for the request, merge any filters defined at the
@@ -50,12 +39,6 @@ class NetApp_UOM_Client(object):
                 if not k in query_params:
                     query_params[k] = v
         return query_params
-
-    def filter(self, filters):
-        """
-        Apply filters to the chained method.
-        """
-        return NetApp_UOM_Client.with_settings(self.settings, filters=filters)
 
     def get_clusters(self, params={}):
         """
