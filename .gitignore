@@ -1,0 +1,9 @@
+netapp_uom.egg-info
+build
+dist
+*.pyc
+__pycache__
+.pytest_cache
+.eggs
+venv
+debug.py
