@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import json
 from netapp_uom.client import NetApp_UOM_Client
 
