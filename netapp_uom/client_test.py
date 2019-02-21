@@ -6,22 +6,20 @@ from netapp_uom.http_test import mock_get_request
 from netapp_uom.objects import NetApp_UOM_Collection
 from netapp_uom.settings_test import NetApp_UOM_Settings_Mock
 
-def mock_client(with_settings=False):
+def mock_client(filters={}):
     """
     Generate a mock client for testing.
     """
     mock_settings = NetApp_UOM_Settings_Mock()
 
-    if not with_settings:
-        return NetApp_UOM_Client(
-            mock_settings.api_host,
-            mock_settings.api_user,
-            mock_settings.api_password,
-            api_port   = mock_settings.api_port,
-            verify_ssl = mock_settings.verify_ssl
-        )
-    else:
-        return NetApp_UOM_Client.with_settings(mock_settings)
+    return NetApp_UOM_Client(
+        mock_settings.api_host,
+        mock_settings.api_user,
+        mock_settings.api_password,
+        api_port   = mock_settings.api_port,
+        verify_ssl = mock_settings.verify_ssl,
+        filters    = filters
+    )
 
 class NetApp_UOM_Client_Test(unittest.TestCase):
     """Tests for `netapp_uom/client.py`."""
@@ -31,11 +29,6 @@ class NetApp_UOM_Client_Test(unittest.TestCase):
         client = mock_client()
         self.assertIsInstance(client, NetApp_UOM_Client)
 
-    def test_create_client_with_settings(self):
-        """ Test creating a new client interface using the `with_settings` method. """
-        client = mock_client(with_settings=True)
-        self.assertIsInstance(client, NetApp_UOM_Client)
-
     def test_client_set_params(self):
         """ Test the `set_params` method in the client. """
         client = mock_client()
@@ -43,12 +36,26 @@ class NetApp_UOM_Client_Test(unittest.TestCase):
         params_retval = client.set_params(test_params)
         self.assertIsInstance(params_retval, dict)
 
-    def test_client_filter(self):
-        """ Test the `filter` method to make sure it returns a client object. """
+    @mock.patch('requests.get', side_effect=mock_get_request)
+    def test_filtered_client(self, mock_get):
+        """ Test creating a client instance with filters. """
+        client = mock_client(filters={'one': 'two'})
+        response = client.get_volumes()
+        self.assertIsInstance(response, NetApp_UOM_Collection)
+
+    @mock.patch('requests.get', side_effect=mock_get_request)
+    def test_request_with_params(self, mock_get):
+        """ Test a client request with parameters. """
         client = mock_client()
-        test_filters = {'one': 'value_one', 'two': 'value_two'}
-        filtered_client = client.filter(test_filters)
-        self.assertIsInstance(filtered_client, NetApp_UOM_Client)
+        response = client.get_volumes(params={'one': 'two'})
+        self.assertIsInstance(response, NetApp_UOM_Collection)
+
+    @mock.patch('requests.get', side_effect=mock_get_request)
+    def test_filtered_client_request_with_params(self, mock_get):
+        """ Test a filtered client request with parameters. """
+        client = mock_client(filters={'three': 'four'})
+        response = client.get_volumes(params={'one': 'two'})
+        self.assertIsInstance(response, NetApp_UOM_Collection)
 
     @mock.patch('requests.get', side_effect=mock_get_request)
     def test_get_clusters(self, mock_get):
