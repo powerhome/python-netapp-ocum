@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import json
-from netapp_uom.client import NetApp_UOM_Client
+from netapp_ocum.client import NetApp_OCUM_Client
 
 """
 This example script shows how to create a filtered client, if you are only
@@ -8,13 +8,13 @@ interested in a subset of data from specific sections of your NetApp inventory.
 """
 
 # Create a new client, filtered to a specific cluster and SVM
-uom_client = NetApp_UOM_Client('hostname', 'username', 'password', filter={
+ocum_client = NetApp_OCUM_Client('hostname', 'username', 'password', filter={
     'clusterId': '1',
     'svmId': '1'
 })
 
 # Get all volumes for the cluster/SVM
-all_volumes = uom_client.get_volumes()
+all_volumes = ocum_client.get_volumes()
 
 # Dump the JSON for all volumes to stdout
 print('All UOM Volumes:')

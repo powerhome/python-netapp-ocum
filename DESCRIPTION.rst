@@ -1,3 +1,3 @@
-# NetApp Unified OnCommand Manager Client
+# NetApp OnCommand Unified Manager Client
 
-This module is designed to interact with NetApp UOM.
+Bindings to read from the NetApp OCUM API.
