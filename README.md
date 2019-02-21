@@ -1,7 +1,13 @@
-[![Build Status](https://api.travis-ci.org/djtaylor/python-netapp-uom.png)](https://api.travis-ci.org/djtaylor/python-netapp-uom)
+[![Build Status](https://api.travis-ci.org/djtaylor/python-netapp-ocum.png)](https://api.travis-ci.org/djtaylor/python-netapp-ocum)
 
-# NetApp Unified OnCommand Manager (UOM) Client
-This module is designed to interact with the HTTP API of the UOM for getting information about clusters, nodes, aggregates, volumes, and other NetApp objects. This is a lightweight wrapper which gets the JSON representation of each object retrieved from the API for local parsing.
+# NetApp OnCommand Unified Manager (OCUM)
+This module is designed to read information from the NetApp OCUM to gather information about your storage infrastructure.
+
+### Python3
+The initial release is targeting support for Python 3. Python 2 support is not planned.
+
+### Caveats
+The first release of this module may not have full support for Namespaces and LUNs. We are not using either of those object types in our infrastructure, so I have no way to initially test or get example API responses.
 
 **NOTE**: This module only supports Python 3
 **NOTE**: LUNs and Namespaces are not functionally tested since we don't have any in our infrastructure
