@@ -3,6 +3,7 @@
 # NetApp Unified OnCommand Manager (UOM) Client
 This module is designed to interact with the HTTP API of the UOM for getting information about clusters, nodes, aggregates, volumes, and other NetApp objects. This is a lightweight wrapper which gets the JSON representation of each object retrieved from the API for local parsing.
 
+**NOTE**: This module only supports Python 3
 **NOTE**: LUNs and Namespaces are not functionally tested since we don't have any in our infrastructure
 **NOTE**: To see full API docs for UOM, visit: https://myuom.domain.com/apidocs
 **NOTE**: Currently this is only tested against UOM 9.3
