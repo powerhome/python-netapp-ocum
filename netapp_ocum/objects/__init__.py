@@ -1,7 +1,9 @@
 from netapp_ocum.objects.cluster import NetApp_OCUM_Cluster
 from netapp_ocum.objects.node import NetApp_OCUM_Node
 from netapp_ocum.objects.aggregate import NetApp_OCUM_Aggregate
+from netapp_ocum.objects.aggregate_metrics import NetApp_OCUM_AggregateMetrics
 from netapp_ocum.objects.volume import NetApp_OCUM_Volume
+from netapp_ocum.objects.volume_metrics import NetApp_OCUM_VolumeMetrics
 from netapp_ocum.objects.svm import NetApp_OCUM_SVM
 from netapp_ocum.objects.port import NetApp_OCUM_Port
 from netapp_ocum.objects.lif import NetApp_OCUM_LIF
@@ -13,13 +15,23 @@ class NetApp_OCUM_Collection(object):
     """
     Class representing a collection of NetApp objects.
     """
-    def __init__(self, response, object_type):
-        self._response = response
-        self._type     = object_type
+    def __init__(self, request, path, params):
+        self._request  = request
+        self._path     = path
+        self._params   = params
+
+        # API response / mapped objects
+        self._response = self._get_response()
         self._objects  = self._map_objects()
 
         # List of all object's JSON
         self.json      = self._map_json()
+
+    def _get_response(self):
+        """
+        Get objects from the API.
+        """
+        return self._request.GET(self._path, params=self._params)
 
     def _map_json(self):
         """
@@ -32,17 +44,19 @@ class NetApp_OCUM_Collection(object):
         Return the object class wrapper.
         """
         return {
-            'cluster': NetApp_OCUM_Cluster,
-            'node': NetApp_OCUM_Node,
-            'aggregate': NetApp_OCUM_Aggregate,
-            'volume': NetApp_OCUM_Volume,
-            'svm': NetApp_OCUM_SVM,
-            'port': NetApp_OCUM_Port,
-            'lif': NetApp_OCUM_LIF,
-            'event': NetApp_OCUM_Event,
-            'namespace': NetApp_OCUM_Namespace,
-            'lun': NetApp_OCUM_LUN
-        }.get(self._type)
+            'clusters': NetApp_OCUM_Cluster,
+            'nodes': NetApp_OCUM_Node,
+            'aggregates': NetApp_OCUM_Aggregate,
+            'aggregates/capacity-utilization': NetApp_OCUM_AggregateMetrics,
+            'volumes': NetApp_OCUM_Volume,
+            'volumes/capacity-utilization': NetApp_OCUM_VolumeMetrics,
+            'svms': NetApp_OCUM_SVM,
+            'ports': NetApp_OCUM_Port,
+            'lifs': NetApp_OCUM_LIF,
+            'events': NetApp_OCUM_Event,
+            'namespaces': NetApp_OCUM_Namespace,
+            'luns': NetApp_OCUM_LUN
+        }.get(self._path)
 
     def _get_object_key(self):
         """
@@ -50,17 +64,19 @@ class NetApp_OCUM_Collection(object):
         from a OCUM JSON response.
         """
         return {
-            'cluster': 'netapp:clusterInventoryList',
-            'node': 'netapp:nodeInventoryList',
-            'aggregate': 'netapp:aggregateInventoryList',
-            'volume': 'netapp:volumeInventoryList',
-            'svm': 'netapp:svmInventoryList',
-            'port': 'netapp:portInventoryList',
-            'lif': 'netapp:lifInventoryList',
-            'event': 'netapp:eventDtoList',
-            'namespace': 'netapp:namespaceInventoryList',
-            'lun': 'netapp:lunInventoryList'
-        }.get(self._type)
+            'clusters': 'netapp:clusterInventoryList',
+            'nodes': 'netapp:nodeInventoryList',
+            'aggregates': 'netapp:aggregateInventoryList',
+            'aggregates/capacity-utilization': 'netapp:aggregateCapacityAndUtilizationList',
+            'volumes': 'netapp:volumeInventoryList',
+            'volumes/capacity-utilization': 'netapp:volumeCapacityAndUtilizationList',
+            'svms': 'netapp:svmInventoryList',
+            'ports': 'netapp:portInventoryList',
+            'lifs': 'netapp:lifInventoryList',
+            'events': 'netapp:eventDtoList',
+            'namespaces': 'netapp:namespaceInventoryList',
+            'luns': 'netapp:lunInventoryList'
+        }.get(self._path)
 
     def _map_objects(self):
         """
