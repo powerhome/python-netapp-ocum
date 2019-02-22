@@ -33,7 +33,7 @@ class NetApp_OCUM_Client_Test(unittest.TestCase):
         """ Test the `set_params` method in the client. """
         client = mock_client()
         test_params = {'one': 'value_one', 'two': 'value_two'}
-        params_retval = client.set_params(test_params)
+        params_retval = client._set_params(test_params)
         self.assertIsInstance(params_retval, dict)
 
     @mock.patch('requests.get', side_effect=mock_get_request)
@@ -76,6 +76,27 @@ class NetApp_OCUM_Client_Test(unittest.TestCase):
         """ Test the `get_aggregates` method. """
         client = mock_client()
         response = client.get_aggregates()
+        self.assertIsInstance(response, NetApp_OCUM_Collection)
+
+    @mock.patch('requests.get', side_effect=mock_get_request)
+    def test_get_aggregate_metrics(self, mock_get):
+        """ Test the `get_aggregate_metrics` method. """
+        client = mock_client()
+        response = client.get_aggregate_metrics()
+        self.assertIsInstance(response, NetApp_OCUM_Collection)
+
+    @mock.patch('requests.get', side_effect=mock_get_request)
+    def test_get_volumes(self, mock_get):
+        """ Test the `get_volumes` method. """
+        client = mock_client()
+        response = client.get_volumes()
+        self.assertIsInstance(response, NetApp_OCUM_Collection)
+
+    @mock.patch('requests.get', side_effect=mock_get_request)
+    def test_get_volume_metrics(self, mock_get):
+        """ Test the `get_volume_metrics` method. """
+        client = mock_client()
+        response = client.get_volume_metrics()
         self.assertIsInstance(response, NetApp_OCUM_Collection)
 
     @mock.patch('requests.get', side_effect=mock_get_request)
