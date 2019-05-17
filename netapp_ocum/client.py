@@ -82,6 +82,12 @@ class NetApp_OCUM_Client(object):
         """
         return NetApp_OCUM_Collection(self.request, 'volumes/capacity-utilization', self._set_params(params))
 
+    def get_volume_relationships(self, params={}):
+        """
+        Return a list of mirror relationships of volumes from the OCUM.
+        """
+        return NetApp_OCUM_Collection(self.request, 'volumes/relationships-transfer-status', self._set_params(params))
+
     def get_ports(self, params={}):
         """
         Return a list of ports from the OCUM.

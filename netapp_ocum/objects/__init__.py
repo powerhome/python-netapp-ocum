@@ -10,6 +10,7 @@ from netapp_ocum.objects.lif import NetApp_OCUM_LIF
 from netapp_ocum.objects.event import NetApp_OCUM_Event
 from netapp_ocum.objects.namespace import NetApp_OCUM_Namespace
 from netapp_ocum.objects.lun import NetApp_OCUM_LUN
+from netapp_ocum.objects.relationship import NetApp_OCUM_Relationship
 
 class NetApp_OCUM_Collection(object):
     """
@@ -50,6 +51,7 @@ class NetApp_OCUM_Collection(object):
             'aggregates/capacity-utilization': NetApp_OCUM_AggregateMetrics,
             'volumes': NetApp_OCUM_Volume,
             'volumes/capacity-utilization': NetApp_OCUM_VolumeMetrics,
+            'volumes/relationships-transfer-status': NetApp_OCUM_Relationship,
             'svms': NetApp_OCUM_SVM,
             'ports': NetApp_OCUM_Port,
             'lifs': NetApp_OCUM_LIF,
@@ -70,6 +72,7 @@ class NetApp_OCUM_Collection(object):
             'aggregates/capacity-utilization': 'netapp:aggregateCapacityAndUtilizationList',
             'volumes': 'netapp:volumeInventoryList',
             'volumes/capacity-utilization': 'netapp:volumeCapacityAndUtilizationList',
+            'volumes/relationships-transfer-status': 'netapp:volumeTransferStatusList',
             'svms': 'netapp:svmInventoryList',
             'ports': 'netapp:portInventoryList',
             'lifs': 'netapp:lifInventoryList',
