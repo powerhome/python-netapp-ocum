@@ -1,16 +1,14 @@
+import json
+
 from netapp_ocum.objects.cluster import NetApp_OCUM_Cluster
 from netapp_ocum.objects.node import NetApp_OCUM_Node
 from netapp_ocum.objects.aggregate import NetApp_OCUM_Aggregate
-from netapp_ocum.objects.aggregate_metrics import NetApp_OCUM_AggregateMetrics
 from netapp_ocum.objects.volume import NetApp_OCUM_Volume
-from netapp_ocum.objects.volume_metrics import NetApp_OCUM_VolumeMetrics
 from netapp_ocum.objects.svm import NetApp_OCUM_SVM
 from netapp_ocum.objects.port import NetApp_OCUM_Port
-from netapp_ocum.objects.lif import NetApp_OCUM_LIF
-from netapp_ocum.objects.event import NetApp_OCUM_Event
+from netapp_ocum.objects.interface import NetApp_OCUM_Interface
 from netapp_ocum.objects.namespace import NetApp_OCUM_Namespace
 from netapp_ocum.objects.lun import NetApp_OCUM_LUN
-from netapp_ocum.objects.relationship import NetApp_OCUM_Relationship
 
 class NetApp_OCUM_Collection(object):
     """
@@ -20,8 +18,9 @@ class NetApp_OCUM_Collection(object):
         self._request  = request
         self._path     = path
         self._params   = params
+        self._klass    = self._get_object_class()
 
-        # API response / mapped objects
+        # API response / objects
         self._response = self._get_response()
         self._objects  = self._map_objects()
 
@@ -32,13 +31,19 @@ class NetApp_OCUM_Collection(object):
         """
         Get objects from the API.
         """
-        return self._request.GET(self._path, params=self._params)
+        accept_types = self._get_object_accept_type()
+
+        return self._request.GET(self._path,
+                                 params=self._params,
+                                 accept=accept_types,
+                                 embedded_key=self._get_object_key(),
+                                 name_from=self._klass.NAME_FROM)
 
     def _map_json(self):
         """
         Return a list of object's JSON.
         """
-        return [x.json for x in self._objects]
+        return self._response
 
     def _get_object_class(self):
         """
@@ -48,16 +53,35 @@ class NetApp_OCUM_Collection(object):
             'clusters': NetApp_OCUM_Cluster,
             'nodes': NetApp_OCUM_Node,
             'aggregates': NetApp_OCUM_Aggregate,
-            'aggregates/capacity-utilization': NetApp_OCUM_AggregateMetrics,
             'volumes': NetApp_OCUM_Volume,
-            'volumes/capacity-utilization': NetApp_OCUM_VolumeMetrics,
-            'volumes/relationships-transfer-status': NetApp_OCUM_Relationship,
             'svms': NetApp_OCUM_SVM,
             'ports': NetApp_OCUM_Port,
-            'lifs': NetApp_OCUM_LIF,
-            'events': NetApp_OCUM_Event,
+            'interfaces': NetApp_OCUM_Interface,
             'namespaces': NetApp_OCUM_Namespace,
             'luns': NetApp_OCUM_LUN
+        }.get(self._path)
+
+    def _get_object_accept_type(self):
+        """
+        Return a list of available Accept-Type headers.
+        """
+        return {
+            'clusters': ['health', 'performance', 'capacity'],
+            'nodes': ['health', 'performance'],
+            'aggregates': ['health', 'performance', 'capacity'],
+            'volumes': [
+                'health',
+                'performance',
+                'capacity',
+                'relationship',
+                'relationship.transferstatus',
+                'relationship.transferrate'
+            ],
+            'svms': ['health', 'performance'],
+            'ports': ['performance', 'health'],
+            'interfaces': ['performance', 'health'],
+            'namespaces': ['performance', 'health'],
+            'luns': ['performance']
         }.get(self._path)
 
     def _get_object_key(self):
@@ -69,25 +93,20 @@ class NetApp_OCUM_Collection(object):
             'clusters': 'netapp:clusterInventoryList',
             'nodes': 'netapp:nodeInventoryList',
             'aggregates': 'netapp:aggregateInventoryList',
-            'aggregates/capacity-utilization': 'netapp:aggregateCapacityAndUtilizationList',
             'volumes': 'netapp:volumeInventoryList',
-            'volumes/capacity-utilization': 'netapp:volumeCapacityAndUtilizationList',
-            'volumes/relationships-transfer-status': 'netapp:volumeTransferStatusList',
             'svms': 'netapp:svmInventoryList',
             'ports': 'netapp:portInventoryList',
-            'lifs': 'netapp:lifInventoryList',
-            'events': 'netapp:eventDtoList',
+            'interfaces': 'netapp:lifInventoryList',
             'namespaces': 'netapp:namespaceInventoryList',
             'luns': 'netapp:lunInventoryList'
         }.get(self._path)
 
     def _map_objects(self):
-        """
-        Map object response JSON data to a class object.
-        """
+        """ Map objets to their appropriate classes """
         netapp_objects = []
-        for netapp_object in self._response['_embedded'][self._get_object_key()]:
-            netapp_objects.append(self._get_object_class()(netapp_object))
+
+        for netapp_object in self._response:
+            netapp_objects.append(self._klass(netapp_object))
         return netapp_objects
 
     def find(self, attr_key, attr_val):

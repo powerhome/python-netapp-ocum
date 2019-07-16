@@ -64,29 +64,11 @@ class NetApp_OCUM_Client(object):
         """
         return NetApp_OCUM_Collection(self.request, 'aggregates', self._set_params(params))
 
-    def get_aggregate_metrics(self, params={}):
-        """
-        Get aggregate metrics from the `aggregates/capacity-utilization` endpoint.
-        """
-        return NetApp_OCUM_Collection(self.request, 'aggregates/capacity-utilization', self._set_params(params))
-
     def get_volumes(self, params={}):
         """
         Return a list of volumes from the OCUM.
         """
         return NetApp_OCUM_Collection(self.request, 'volumes', self._set_params(params))
-
-    def get_volume_metrics(self, params={}):
-        """
-        Get volume metrics from the `volumes/capacity-utilization` endpoint.
-        """
-        return NetApp_OCUM_Collection(self.request, 'volumes/capacity-utilization', self._set_params(params))
-
-    def get_volume_relationships(self, params={}):
-        """
-        Return a list of mirror relationships of volumes from the OCUM.
-        """
-        return NetApp_OCUM_Collection(self.request, 'volumes/relationships-transfer-status', self._set_params(params))
 
     def get_ports(self, params={}):
         """
@@ -94,17 +76,11 @@ class NetApp_OCUM_Client(object):
         """
         return NetApp_OCUM_Collection(self.request, 'ports', self._set_params(params))
 
-    def get_events(self, params={}):
+    def get_interfaces(self, params={}):
         """
-        Return a list of events from the OCUM.
+        Return a list of networking interfaces from the OCUM.
         """
-        return NetApp_OCUM_Collection(self.request, 'events', self._set_params(params))
-
-    def get_lifs(self, params={}):
-        """
-        Return a list of LIFs from the OCUM.
-        """
-        return NetApp_OCUM_Collection(self.request, 'lifs', self._set_params(params))
+        return NetApp_OCUM_Collection(self.request, 'interfaces', self._set_params(params))
 
     def get_luns(self, params={}):
         """

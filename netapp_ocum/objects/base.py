@@ -3,7 +3,7 @@ class NetApp_OCUM_ObjectBase(object):
     Base class for NetApp objects as returned by the API.
     """
     def __init__(self, *args):
-        self.json     = args[0]
+        self.json = args[0]
 
     def get(self, attr_key):
         """
