@@ -1,5 +1,6 @@
 import json
 
+from netapp_ocum.http import NetApp_OCUM_HTTP
 from netapp_ocum.objects.cluster import NetApp_OCUM_Cluster
 from netapp_ocum.objects.node import NetApp_OCUM_Node
 from netapp_ocum.objects.aggregate import NetApp_OCUM_Aggregate
@@ -14,8 +15,8 @@ class NetApp_OCUM_Collection(object):
     """
     Class representing a collection of NetApp objects.
     """
-    def __init__(self, request, path, params):
-        self._request  = request
+    def __init__(self, settings, path, params):
+        self._request  = NetApp_OCUM_HTTP(settings)
         self._path     = path
         self._params   = params
         self._klass    = self._get_object_class()
@@ -73,9 +74,7 @@ class NetApp_OCUM_Collection(object):
                 'health',
                 'performance',
                 'capacity',
-                'relationship',
-                'relationship.transferstatus',
-                'relationship.transferrate'
+                'relationship'
             ],
             'svms': ['health', 'performance'],
             'ports': ['performance', 'health'],
