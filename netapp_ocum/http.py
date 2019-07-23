@@ -25,7 +25,7 @@ class NetApp_OCUM_HTTP(object):
 
         # Request failed
         if not int(response.status_code) == 200:
-            raise Exception('Failed to GET {0}: {1}'.format(request_url, response.json()))
+            raise Exception('Failed to GET {0}: {1}'.format(url, response.json()))
 
         responses[accept] = response.json()['_embedded'][embedded_key]
 
