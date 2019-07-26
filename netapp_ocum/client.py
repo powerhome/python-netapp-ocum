@@ -1,4 +1,3 @@
-from netapp_ocum.http import NetApp_OCUM_HTTP
 from netapp_ocum.objects import NetApp_OCUM_Collection
 from netapp_ocum.settings import NetApp_OCUM_Settings
 
@@ -24,9 +23,6 @@ class NetApp_OCUM_Client(object):
         # Any filters as defined by the filter() method
         self.filters = filters
 
-        # Request handler
-        self.request = NetApp_OCUM_HTTP(self.settings)
-
     def _set_params(self, params):
         """
         Set query parameters for the request, merge any filters defined at the
@@ -44,76 +40,52 @@ class NetApp_OCUM_Client(object):
         """
         Return a list of clusters from the OCUM.
         """
-        return NetApp_OCUM_Collection(self.request, 'clusters', self._set_params(params))
+        return NetApp_OCUM_Collection(self.settings, 'clusters', self._set_params(params))
 
     def get_svms(self, params={}):
         """
         Return a list of SVMs from the OCUM.
         """
-        return NetApp_OCUM_Collection(self.request, 'svms', self._set_params(params))
+        return NetApp_OCUM_Collection(self.settings, 'svms', self._set_params(params))
 
     def get_nodes(self, params={}):
         """
         Return a list of nodes from the OCUM.
         """
-        return NetApp_OCUM_Collection(self.request, 'nodes', self._set_params(params))
+        return NetApp_OCUM_Collection(self.settings, 'nodes', self._set_params(params))
 
     def get_aggregates(self, params={}):
         """
         Return a list of aggregates from the OCUM.
         """
-        return NetApp_OCUM_Collection(self.request, 'aggregates', self._set_params(params))
-
-    def get_aggregate_metrics(self, params={}):
-        """
-        Get aggregate metrics from the `aggregates/capacity-utilization` endpoint.
-        """
-        return NetApp_OCUM_Collection(self.request, 'aggregates/capacity-utilization', self._set_params(params))
+        return NetApp_OCUM_Collection(self.settings, 'aggregates', self._set_params(params))
 
     def get_volumes(self, params={}):
         """
         Return a list of volumes from the OCUM.
         """
-        return NetApp_OCUM_Collection(self.request, 'volumes', self._set_params(params))
-
-    def get_volume_metrics(self, params={}):
-        """
-        Get volume metrics from the `volumes/capacity-utilization` endpoint.
-        """
-        return NetApp_OCUM_Collection(self.request, 'volumes/capacity-utilization', self._set_params(params))
-
-    def get_volume_relationships(self, params={}):
-        """
-        Return a list of mirror relationships of volumes from the OCUM.
-        """
-        return NetApp_OCUM_Collection(self.request, 'volumes/relationships-transfer-status', self._set_params(params))
+        return NetApp_OCUM_Collection(self.settings, 'volumes', self._set_params(params))
 
     def get_ports(self, params={}):
         """
         Return a list of ports from the OCUM.
         """
-        return NetApp_OCUM_Collection(self.request, 'ports', self._set_params(params))
+        return NetApp_OCUM_Collection(self.settings, 'ports', self._set_params(params))
 
-    def get_events(self, params={}):
+    def get_interfaces(self, params={}):
         """
-        Return a list of events from the OCUM.
+        Return a list of networking interfaces from the OCUM.
         """
-        return NetApp_OCUM_Collection(self.request, 'events', self._set_params(params))
-
-    def get_lifs(self, params={}):
-        """
-        Return a list of LIFs from the OCUM.
-        """
-        return NetApp_OCUM_Collection(self.request, 'lifs', self._set_params(params))
+        return NetApp_OCUM_Collection(self.settings, 'interfaces', self._set_params(params))
 
     def get_luns(self, params={}):
         """
         Return a list of LUNs from the OCUM.
         """
-        return NetApp_OCUM_Collection(self.request, 'luns', self._set_params(params))
+        return NetApp_OCUM_Collection(self.settings, 'luns', self._set_params(params))
 
     def get_namespaces(self, params={}):
         """
         Return a list of namespaces from the OCUM.
         """
-        return NetApp_OCUM_Collection(self.request, 'namespaces', self._set_params(params))
+        return NetApp_OCUM_Collection(self.settings, 'namespaces', self._set_params(params))
