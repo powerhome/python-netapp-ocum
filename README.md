@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/djtaylor/python-netapp-ocum.png)](https://api.travis-ci.org/djtaylor/python-netapp-ocum)
+[![Build Status](https://api.travis-ci.org/powerhome/python-netapp-ocum.png)](https://api.travis-ci.org/powerhome/python-netapp-ocum)
 
 # NetApp OnCommand Unified Manager (OCUM)
 This module is designed to read information from the NetApp OCUM to gather information about your storage infrastructure.
