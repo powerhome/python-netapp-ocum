@@ -1,5 +1,3 @@
-[![Build Status](https://api.travis-ci.org/djtaylor/python-netapp-ocum.png)](https://api.travis-ci.org/djtaylor/python-netapp-ocum)
-
 # NetApp OnCommand Unified Manager (OCUM)
 This module is designed to read information from the NetApp OCUM to gather information about your storage infrastructure.
 
@@ -10,7 +8,7 @@ The initial release is targeting support for Python 3. Python 2 support is not p
 $ pip3 install netapp-ocum
 
 # Or to install from source
-$ git clone https://github.com/djtaylor/python-netapp-ocum
+$ git clone https://github.com/powerhome/python-netapp-ocum
 $ cd python-netapp-ocum
 $ python3 setup.py install
 ```
