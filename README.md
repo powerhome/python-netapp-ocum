@@ -1,4 +1,5 @@
 [![Build Status](https://api.travis-ci.org/djtaylor/python-netapp-ocum.png)](https://api.travis-ci.org/djtaylor/python-netapp-ocum)
+[![PyPi](https://img.shields.io/pypi/v/netapp-ocum.svg)](https://pypi.python.org/pypi/netapp-ocum)
 
 # NetApp OnCommand Unified Manager (OCUM)
 This module is designed to read information from the NetApp OCUM to gather information about your storage infrastructure.
@@ -14,6 +15,9 @@ $ git clone https://github.com/djtaylor/python-netapp-ocum
 $ cd python-netapp-ocum
 $ python3 setup.py install
 ```
+
+
+[PyPI package page](https://pypi.org/project/netapp-ocum/)
 
 ### Getting Started
 This repository includes an [example scripts](examples/README.md) directory to help you get started.
